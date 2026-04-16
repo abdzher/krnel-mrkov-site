@@ -1,4 +1,4 @@
-site_name: KRNEL-MRKOV
+site_name: krnel-mrkov
 
 theme:
   name: material
@@ -21,14 +21,11 @@ theme:
     - content.code.copy
     - navigation.top # Añade botón para volver arriba (útil en documentación larga)
 
-plugins:
-  - search
-  - i18n:
-      default_language: es
-      languages:
-        es: 
-          name: Español
-          build: true
-        en: 
-          name: English
-          build: true
+extra:
+  alternate:
+    - name: Español
+      link: /es/
+      lang: es
+    - name: English
+      link: /en/ 
+      lang: en
