@@ -1,0 +1,34 @@
+site_name: KRNEL-MRKOV
+
+theme:
+  name: material
+  language: es
+  palette:
+    - scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Cambiar a modo oscuro
+    - scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Cambiar a modo claro
+  features:
+    - navigation.tabs
+    - content.code.copy
+    - navigation.top # Añade botón para volver arriba (útil en documentación larga)
+
+plugins:
+  - search
+  - i18n:
+      default_language: es
+      languages:
+        es: 
+          name: Español
+          build: true
+        en: 
+          name: English
+          build: true
