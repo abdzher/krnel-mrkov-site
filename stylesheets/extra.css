@@ -1,0 +1,203 @@
+/* ================================================================
+   KRNEL MRKOV — Header & Tabs: Pixelated Gradient
+   ================================================================
+   TÉCNICA EN DOS CAPAS (pseudo-elementos):
+   
+   ::before → Degradado escalonado con hard-stops CSS.
+              11 bandas de color sólido cuantizadas manualmente
+              (sin interpolación suave). Simula la paleta reducida
+              de gráficos 8-bit / dithering de terminal.
+   
+   ::after  → Superposición de cuadrícula pixel + scanlines,
+              usando repeating-conic-gradient (tablero de ajedrez
+              de N×N px) + repeating-linear-gradient (líneas de
+              escaneo horizontales). mix-blend-mode:overlay lo
+              funde con ::before sin aplanar el contraste.
+   
+   SEGURIDAD DE INTERACTIVIDAD:
+   - Ambas capas tienen pointer-events: none → nunca interceptan
+     clics, hover ni focus de ningún elemento Material.
+   - z-index 0/1 para decoración, z-index 10 para contenido real.
+   ================================================================ */
+
+
+/* ── 1. CONTEXTO DE POSICIONAMIENTO ─────────────────────────────── */
+/*
+   position: relative es necesario para que los pseudo-elementos
+   con position: absolute queden contenidos dentro del header/tabs.
+   overflow: hidden evita que ::before o ::after se derramen.
+   background: transparent elimina el color que Material inyecta
+   via --md-primary-bg-color; el color lo pondrá ::before.
+*/
+.md-header,
+.md-tabs {
+  position: relative !important;
+  background: transparent !important;
+  overflow: hidden;
+}
+
+
+/* ── 2. ::before — DEGRADADO ESCALONADO (el "píxel cuantizado") ── */
+/*
+   linear-gradient con hard-stops dobles (mismo color se repite
+   dos veces consecutivas con % distintos) produce bandas sólidas
+   sin transición suave entre ellas — es la forma CSS de simular
+   una paleta de color reducida / cuantización de 8 bits.
+
+   Los 11 colores intermedios son interpolaciones lineales manuales
+   entre #008080 (Teal, Krnel) y #ff5722 (Deep Orange, Mrkov):
+     R: 0→255   ÷ 10 pasos = +25.5 por banda
+     G: 128→87  ÷ 10 pasos = –4.1  por banda
+     B: 128→34  ÷ 10 pasos = –9.4  por banda
+
+   Ajusta el ancho de las bandas (los % de cada hard-stop)
+   para controlar cuántas "franjas de píxel" ves:
+   - Bandas anchas (8-10%) = bloques grandes, estilo retro fuerte.
+   - Bandas estrechas (3-4%) = más pasos, más suave pero aún pixelado.
+*/
+.md-header::before,
+.md-tabs::before {
+  content: '';
+  position: absolute;
+  inset: 0;            /* Cubre todo el padre */
+  z-index: 0;          /* Debajo de TODO el contenido real */
+  pointer-events: none; /* ← CRÍTICO: no bloquea ningún clic */
+
+  background: linear-gradient(90deg,
+    /* ── Teal sólido (Krnel) ─────────────────────────── */
+    #008080  0%,  #008080 10%,
+
+    /* ── Zona de transición pixelada (10 bandas) ──────── */
+    #1a7c77 10%,  #1a7c77 18%,   /* Banda 1  */
+    #337870 18%,  #337870 26%,   /* Banda 2  */
+    #4d7364 26%,  #4d7364 34%,   /* Banda 3  */
+    #666f5a 34%,  #666f5a 42%,   /* Banda 4  */
+    #806b51 42%,  #806b51 50%,   /* Banda 5  ← punto medio */
+    #996748 50%,  #996748 58%,   /* Banda 6  */
+    #b3623e 58%,  #b3623e 66%,   /* Banda 7  */
+    #cc5e35 66%,  #cc5e35 74%,   /* Banda 8  */
+    #e65a2b 74%,  #e65a2b 82%,   /* Banda 9  */
+
+    /* ── Deep Orange sólido (Mrkov) ──────────────────── */
+    #ff5722 82%,  #ff5722 100%
+  );
+}
+
+
+/* ── 3. ::after — CUADRÍCULA DE PÍXELES + SCANLINES ─────────────── */
+/*
+   CAPA A — repeating-conic-gradient:
+     Genera un tablero de ajedrez de cuadros de 6×6px con celdas
+     alternando entre rgba(blanco,9%) y transparent. Sobre las
+     bandas de color de ::before, los cuadros blancos "levantan"
+     las crestas y los transparentes dejan los valles oscuros,
+     dando la apariencia de una matriz de píxeles / datos.
+
+     Cambia background-size (6px 6px) para ajustar el tamaño del
+     "píxel" digital:
+       4px×4px  → muy granular, casi ruido
+       6px×6px  → píxel 8-bit clásico  ← recomendado
+       10px×10px → bloques grandes, más dramático
+
+   CAPA B — repeating-linear-gradient (scanlines):
+     Líneas horizontales de 1px opacas cada 2px. Evoca monitores
+     CRT / terminales, coherente con la estética "Linux nerd".
+     Ajusta la opacidad (0.13) para más o menos intensidad.
+
+   mix-blend-mode: overlay:
+     Fusiona ambas capas con ::before de forma no destructiva.
+     Las zonas claras del patrón aclaran el color subyacente y las
+     oscuras lo oscurecen → fragmentación visual sin perder identidad
+     de color. Si prefieres más contraste usa 'hard-light'.
+*/
+.md-header::after,
+.md-tabs::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;          /* Sobre ::before, BAJO el contenido */
+  pointer-events: none; /* ← CRÍTICO: no bloquea ningún clic */
+
+  background:
+    /* Capa A: tablero de ajedrez de píxeles */
+    repeating-conic-gradient(
+      rgba(255, 255, 255, 0.09) 0deg  90deg,
+      transparent               90deg 180deg
+    ) 0 0 / 6px 6px,
+
+    /* Capa B: scanlines CRT horizontales */
+    repeating-linear-gradient(
+      0deg,
+      transparent          0px, transparent  1px,
+      rgba(0, 0, 0, 0.13)  1px, rgba(0, 0, 0, 0.13) 2px
+    );
+
+  mix-blend-mode: overlay;
+}
+
+
+/* ── 4. JERARQUÍA Z-INDEX: contenido interactivo ─────────────────── */
+/*
+   Todos los hijos directos del header y las tabs deben vivir
+   por encima de las capas decorativas (z-index 0 y 1).
+   Sin position: relative, z-index no tiene efecto en estos
+   elementos (depende del stacking context).
+
+   Esto garantiza que sean 100% interactivos:
+   - .md-header__button (hamburger, GitHub, dark-mode toggle)
+   - .md-header__title  (logo + nombre del sitio)
+   - .md-search         (barra de búsqueda y su input)
+   - .md-tabs__link     (todos los enlaces de navegación)
+*/
+.md-header > *,
+.md-tabs > * {
+  position: relative;
+  z-index: 10;
+}
+
+
+/* ── 5. TABS: ligero oscurecimiento para jerarquía visual ─────────── */
+/*
+   Los tabs quedan visualmente "debajo" del header usando
+   brightness en ::before. No requiere repetir el gradiente.
+*/
+.md-tabs::before {
+  filter: brightness(0.80);
+}
+
+
+/* ── 6. SEPARADOR sutil entre header y tabs ──────────────────────── */
+.md-tabs {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+/* ── 7. COLOR DE TEXTO DEL HEADER ────────────────────────────────── */
+/*
+   Material usa --md-primary-fg-color para iconos y texto en el header.
+   Forzamos blanco puro para máximo contraste sobre el gradiente.
+*/
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color:        #ffffff;
+  --md-primary-fg-color--light: rgba(255, 255, 255, 0.65);
+  --md-primary-fg-color--dark:  rgba(255, 255, 255, 0.90);
+}
+
+
+/* ── 8. SOMBRA inferior del header ───────────────────────────────── */
+.md-header {
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
+}
+
+
+/* ── 9. ESTADO ACTIVO e HOVER de las pestañas ────────────────────── */
+.md-tabs__link {
+  opacity: 0.70;
+  transition: opacity 0.15s ease;
+}
+
+.md-tabs__link:hover,
+.md-tabs__link--active {
+  opacity: 1 !important;
+  color: #ffffff !important;
+}
