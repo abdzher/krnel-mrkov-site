@@ -1,31 +1,72 @@
-site_name: krnel-mrkov
+site_name: Proyecto KRNEL-MRKOV
+site_author: Abdiel Zahir Hernandez Escobedo
 
 theme:
   name: material
   language: es
+  # Logotipo y Favicon (asumiendo que los guardas en docs/assets/)
+  logo: assets/krnel-mrkov-sqlogo.png
+  favicon: assets/krnel-mrkov-sqlogo-200.png
+  
+  font:
+    text: Space Grotesk  # Autenticidad tech para lectura
+    code: JetBrains Mono # La fuente por excelencia para tu código
+
   palette:
-    - scheme: default
-      primary: teal
-      accent: cyan
-      toggle:
-        icon: material/brightness-7
-        name: Cambiar a modo oscuro
+    # Solo modo oscuro (Slate) por defecto
     - scheme: slate
-      primary: teal
-      accent: cyan
-      toggle:
-        icon: material/brightness-4
-        name: Cambiar a modo claro
+      primary: teal    # Identidad Krnel: Estabilidad y Core
+      accent: deep orange # Identidad Markov: Flujo y Energía en links/botones
+      
   features:
     - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
     - content.code.copy
-    - navigation.top # Añade botón para volver arriba (útil en documentación larga)
+    - content.code.annotate
+    - content.footnote.tooltips
+    - search.suggest
+    - search.highlight
 
-extra:
-  alternate:
-    - name: Español
-      link: /es/
-      lang: es
-    - name: English
-      link: /en/ 
-      lang: en
+markdown_extensions:
+  - footnotes
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+nav:
+  - Home: index.md
+  - Fundamentos: 
+    - Motivacion: fundamentos/motivacion.md
+    - Identidad: fundamentos/identidad.md
+    - Filosofía:
+      - Misión y Visión: fundamentos/filosofia/mision-vision.md
+      - Principios y Valores: fundamentos/filosofia/principios.md
+      - Objetivos del Proyecto: fundamentos/filosofia/objetivos.md
+    #- El Ecosistema:
+    #    - ¿Qué es KRNEL-MRKOV?: fundamentos/ecosistema/definiciones.md
+    #    - KRNEL (El Motor): fundamentos/ecosistema/krnel.md
+    #    - MRKOV (La Matriz): fundamentos/ecosistema/mrkov.md
+    #- Gobernanza:
+    #    - Organización: fundamentos/gobernanza/organizacion.md
+    #    - Gestión de Roles: fundamentos/gobernanza/roles.md
+    #    - Metodología de Acceso: fundamentos/gobernanza/acceso.md
+    #- Guías:
+    #    - Guía del Usuario: fundamentos/guias/usuario.md
+    #    - Guía del Mantenedor: fundamentos/guias/mantenedor.md
+  - Documentación:
+    - documentacion/00_inicio.md
+    #- Conceptos:
+    #  - Linux: documentacion/10_conceptos/11_linux.md
+
+extra_css:
+  - stylesheets/extra.css
+
+copyright: |
+  &copy; 2026 <b>Abdiel Zahir Hernandez Escobedo</b>. 
+  Este contenido está bajo licencia <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a>.

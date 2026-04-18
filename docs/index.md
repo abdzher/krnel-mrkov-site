@@ -1,17 +1,3 @@
-# Welcome to MkDocs
+# Proyecto KRNEL-MRKOV
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
-
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+Este sitio está dividio en dos secciones, si quieres aprender acerca de las motivaciones, principios, valores, definiciones, organización y manuales de uso, dirígete a los [Fundamentos del proyecto](fundamentos/motivacion.md). Si buscas la parte técnica del proyecto, la documentación del código, las decisiones de arquitectura, las metodologías de administración, mantenimiento, entre otros temas técnicos, dirígete a la [Documentación técnica](documentacion/00_inicio.md). 
