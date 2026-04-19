@@ -4,14 +4,14 @@ El proyecto KRNEL-MRKOV está conformado por dos acrónimos:
 
 ## KRNEL
 
-El **Kernel de Reproducibilidad para Nodos y Equipos Latentes** (KRNEL) es el núcleo y motor lógico de Infraestructura como Código (IaC) del proyecto. Representa el conjunto de instrucciones algorítmicas, manifiestos y políticas de seguridad que transforman hardware en blanco en un ecosistema de cómputo distribuido estandarizado y dedicado a la disciplina estadística.El código que logra todo esto es albergado y manejado en el repositorio [krnel-engine](https://github.com/abdzher/krnel-engine) y está conformado por un conjunto de códigos que tienen la tarea de:
+El **Kernel de Reproducibilidad para Nodos y Equipos Latentes** (KRNEL) es el núcleo y motor lógico de Infraestructura como Código (IaC) del proyecto. Representa el conjunto de instrucciones algorítmicas, manifiestos y políticas de seguridad que transforman hardware en blanco en un ecosistema de cómputo distribuido estandarizado y dedicado a la disciplina estadística. El código que logra todo esto es albergado y manejado en el repositorio [krnel-engine](https://github.com/abdzher/krnel-engine) y está conformado por un conjunto de códigos que tienen la tarea de:
 
 - Definir la arquitectura de red, obtener los recursos físicos y gestionar el despliegue del orquestador (K3s).
 - Establecer las políticas de acceso, restricciones y cuotas codificadas en formato YAML.
 - Llevar a cabo el despliegue de los servicios base (JupyterHub, Prometheus, Spark).
 - Automatizar las tareas de mantenimiento y asegurar la reproducibilidad.
 
-De modo que KRNEL son el conjunto de reglas e instrucciones que convierten un conjunto de computadoras en un clúster que finalmente despliega una plataforma. Además, KRNEL está publicado como un proyecto de código abierto con licencia Apache 2.0, de modo que trasciende los ciclos administrativos y garantiza su continuidad como patrimonio tecnológico de los estudiantes
+De modo que KRNEL son el conjunto de reglas e instrucciones que convierten un conjunto de computadoras en un clúster que finalmente despliega una plataforma. Además, KRNEL está publicado como un proyecto de código abierto con licencia Apache 2.0, de modo que trasciende los ciclos administrativos y garantiza su continuidad como patrimonio tecnológico de los estudiantes.
 
 ## MRKOV
 
